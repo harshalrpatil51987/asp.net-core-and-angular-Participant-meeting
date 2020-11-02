@@ -1,0 +1,108 @@
+﻿<div [@routerTransition]>
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 *ngIf="appSession.userId!=2">My Meetings</h1>
+                    <h1 *ngIf="appSession.userId==2">Participants</h1>
+                </div>
+                <div class="col-6 text-right">
+                    <a href="javascript:;" class="btn bg-blue" (click)="createMeetupEvent()" *ngIf="appSession.userId!=2 && items.length==0">
+                        <i class="fa fa-plus-square"></i>
+                        {{ "Create" | localize }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">                  
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <button type="button"
+                                    class="btn bg-blue">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <input type="text"
+                               class="form-control"
+                               id="myInput"
+                               name="keyword"
+                               placeholder="Search for names.."
+                               (input)="searchname()" />
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row clearfix">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="card main-content">                                
+                                <div class="body table-responsive">
+                                    <table class="table table-hover table-striped order-table" id="myTable">
+                                        <thead>
+                                            <tr>
+                                                <th>{{l('Name')}}</th>
+                                                <th>{{l('DOB')}}</th>
+                                                <th>{{l('Age')}}</th>
+                                                <th>{{l('Profession')}}</th>
+                                                <th>{{l('State')}}</th>
+                                                <th>{{l('City')}}</th>
+                                                <th>{{l('Entity Type')}}</th>
+                                                <th>{{l('Actions')}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let role of items">
+                                                <td>{{role.firstName}}&nbsp;{{role.lastName}}</td>
+                                                <td>{{role.dob | date:'dd-mm-yyyy'}}</td>
+                                                <th>{{role.age}}</th>
+                                                <th>{{role.professionName}}</th>
+                                                <th>{{role.stateName}}</th>
+                                                <th>{{role.city}}</th>
+                                                <th>{{role.entityType}} &nbsp; {{role.guestOf}}</th>
+                                                <td>
+                                                    <button *ngIf="role.parentUser && appSession.userId!=2" type="button"
+                                                            class="btn btn-sm bg-secondary"
+                                                            (click)="editupEvent(role)">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                        {{ "Edit" | localize }}
+                                                    </button>
+                                                    <button *ngIf="role.parentUser && appSession.userId==2" type="button"
+                                                            class="btn btn-sm bg-secondary"
+                                                            (click)="editupEvent(role)">
+                                                        <i class="fas fa-eye"></i>
+                                                        {{ "View" | localize }}
+                                                    </button>
+                                                    <button *ngIf="role.parentUser" type="button"
+                                                            class="btn btn-sm bg-danger mx-2"
+                                                            (click)="deleteMeetupEvent(role)">
+                                                        <i class="fas fa-trash"></i>
+                                                        {{ "Delete" | localize }}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+    .pagination {
+        margin: 0px !important;
+    }
+</style>
+
+
+
